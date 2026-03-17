@@ -1,0 +1,18 @@
+{
+    "gcp_project": {
+        "name": "gcp project",
+        "value": "roger-berlind-demos"
+    },
+    "gcp_region": {
+        "name": "gcp_region",
+        "value": "us-east1"
+    },
+    "master_username": {
+        "name": "admin_username",
+        "value": "john_doe"
+    },
+    "master_password": {
+        "name": "admin_password",
+        "value": "123456complexRegEx"
+    },
+}

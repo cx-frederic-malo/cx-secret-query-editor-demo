@@ -1,0 +1,5 @@
+regex: entropy_[\w-]{36}
+keywords:
+    - entropy_
+entropy: 4.5  # Minimum shannon entropy, which measures how random a string is. Can range from 0-8
+scoreRuleType: 4  # Affects the ASPM score, can go from 1 to 4

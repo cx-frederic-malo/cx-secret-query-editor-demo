@@ -1,0 +1,7 @@
+regex: '"master_password"[^\n}]*(\n[^\n}]*){0,4}"value":\s*"([^"]*)"'
+secretGroup: 2   # ⚠️ shifted to 2 because the group (\n[^\n}]*) is group 1
+entropy: 3
+keywords:
+  - master_password
+
+# Note: in the regex, {0,4} defines number of lines between master_password and the secret. Can be customized

@@ -1,0 +1,32 @@
+regex: ^[A-Z]{3}-\d{4}$            # REQUIRED: golang regular expression used to find secrets. For regexes, if enclosed in "", make sure to escape backslashes (\\, \\b, etc.). If capture group is present in regex, it's used to find the secret, otherwise whole regex is used. Which group is considered the secret can be defined with secretGroup 
+entropy: 3.5                       # minimum shannon entropy, which measures how random a string is. Can range from 0-8. The more unique characters a string has, the higher the entropy. The value of entropy will tend to become log2(unique chars), so long as all unique are equally present in the string ('abcd' string has entropy of log2(4)=2, but so does 'aabbccdd'). To test entropy values, use https://textcompare.io/shannon-entropy-calculator. Default rules that use entropy have values between 2.0 and 4.5, though these minimums can sometimes be 1-2 lower than the entropy of a true positive. Leave entropy empty to consider matches regardless of entropy
+keywords: # REQUIRED: At least one keyword required. Keywords are used for pre-regex check filtering. Rules that contain keywords will perform a quick string compare check to make sure the keyword(s) are in the content being scanned.
+  - security
+  - password
+  - encryption
+  - credentials
+path: "^src/.*\\.go$"                # regex to limit the rule to specific file paths, for example, only .tf and .hcl files. For regexes, if enclosed in "", make sure to escape backslashes (\\, \\b, etc.)
+secretGroup: 1                       # Defines which capture group of regex match is considered the secret
+scoreRuleType: 4                     # Affects the ASPM score, can go from 1 to 4. The highest score is reached with 4. If omitted in rule it will take the value of 1. 
+allowLists: # allowed values to ignore if matched
+  - description: Allowlist for known safe patterns and commits
+    matchCondition: OR              # AND or OR. determines whether all criteria in the allowList must match. Defaults to OR if not specified
+    regexes: # allowed regex patterns
+      - ^(TEST|DUMMY)-KEY-[0-9]+$
+      - ^SAFE_VALUE_[A-Z]+$
+    regexTarget: match              # Can be match or line. Determines whether the regexes in allowList are tested against the rule.Regex match or the full line being scanned. Defaults to "match" if not specified
+    paths:    # paths that can be ignored for this allowList
+      - ^docs/.*                    # Ignore matches in docs folder
+      - ^test_data/.*               # Ignore matches in test data
+    stopWords:                        # stop words that if found in the secret, will discard the finding. Stop words are searched on the secret, which can be either the full regex match or the capture group if any is defined in the rule regex
+      - example
+      - dummy
+      - placeholder
+  - description: Ignore generated files
+    matchCondition: AND
+    regexTarget: line
+    paths:
+      - ^generated/.*
+    stopWords:
+      - autogen
+      - do_not_edit

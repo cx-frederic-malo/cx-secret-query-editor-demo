@@ -1,0 +1,8 @@
+regex: ghp_\w{36}
+keywords:
+    - ghp_
+entropy: 3  # Minimum shannon entropy, which measures how random a string is. Can range from 0-8
+allowLists:
+    - regexTarget: match # Defaults to "match" if not specified
+      regexes:
+        - (?i)^ghp_test_
